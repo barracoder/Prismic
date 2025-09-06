@@ -74,7 +74,8 @@ export interface IReactModule {
   /**
    * Get components that can be dynamically loaded
    */
-  getComponents?(): Record<string, React.ComponentType<unknown>>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getComponents?(): Record<string, React.ComponentType<any>>;
 
   /**
    * Get UI contributions for dashboard elements
@@ -109,8 +110,10 @@ export interface UIContributions {
 export interface SidebarContribution {
   id: string;
   title: string;
-  component: React.ComponentType<unknown>;
-  icon?: React.ComponentType<unknown> | string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  component: React.ComponentType<any>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  icon?: React.ComponentType<any> | string;
   position: 'left' | 'right';
   priority: number;
   context?: ContextCondition[];
@@ -126,7 +129,8 @@ export interface MenuItemContribution {
   label: string;
   command: string;
   group?: string;
-  icon?: React.ComponentType<unknown> | string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  icon?: React.ComponentType<any> | string;
   shortcut?: string;
   context?: ContextCondition[];
   submenu?: MenuItemContribution[];
@@ -140,7 +144,8 @@ export interface ToolbarItemContribution {
   id: string;
   command: string;
   tooltip?: string;
-  icon?: React.ComponentType<unknown> | string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  icon?: React.ComponentType<any> | string;
   text?: string;
   group?: string;
   priority: number;

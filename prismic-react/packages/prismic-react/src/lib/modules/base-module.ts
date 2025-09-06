@@ -49,7 +49,8 @@ export abstract class BaseReactModule implements IReactModule {
   /**
    * Get components that can be dynamically loaded
    */
-  public getComponents?(): Record<string, React.ComponentType<unknown>>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public getComponents?(): Record<string, React.ComponentType<any>>;
   
   /**
    * Get UI contributions for dashboard elements
