@@ -32,7 +32,7 @@
     "ci:e2e": "echo '🎭 Running E2E tests...' && npm run test:e2e",
     "ci:package-health": "npm run ci:package-size && npm run ci:package-test",
     "ci:package-size": "echo '📦 Checking package size...' && cd packages/prismic-react && npm pack --dry-run && ls -la dist/",
-    "ci:package-test": "echo '🔬 Testing package installation...' && cd packages/prismic-react && npm pack && cd ../demo-website && npm install ../prismic-react/prismic-react-*.tgz && npm run build"
+    "ci:package-test": "echo '🔬 Testing package installation...' && cd packages/prismic-react && npm pack --quiet && cd ../demo-website && rm -f prismic-react-*.tgz && cp ../prismic-react/prismic-react-*.tgz . && npm install ./prismic-react-*.tgz && npm run build && rm -f prismic-react-*.tgz"
   },
   "dependencies": {
     "react": "^19.1.1",
@@ -63,7 +63,7 @@
     "vitest": "^3.2.4"
   },
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=20.19.0",
     "npm": ">=9.0.0"
   }
 }
