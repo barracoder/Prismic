@@ -13,9 +13,9 @@
     "test:coverage": "vitest --coverage"
   },
   "dependencies": {
+    "prismic-react": "file:../prismic-react/prismic-react-0.1.0.tgz",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "prismic-react": "file:../prismic-react"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",

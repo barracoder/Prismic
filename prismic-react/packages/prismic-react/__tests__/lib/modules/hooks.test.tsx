@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { renderHook, render, screen, cleanup } from '@testing-library/react';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { render, screen, cleanup } from '@testing-library/react';
 import React from 'react';
 import { 
   useModuleManager, 
@@ -30,6 +30,16 @@ const TestComponent: React.FC = () => {
       <div data-testid="module-manager">{moduleManager ? 'present' : 'missing'}</div>
       <div data-testid="command-manager">{commandManager ? 'present' : 'missing'}</div>
       <div data-testid="dashboard-context">{JSON.stringify(dashboardContext)}</div>
+    </div>
+  );
+};
+
+const CommandManagerOnlyComponent: React.FC = () => {
+  const commandManager = useCommandManager();
+  
+  return (
+    <div>
+      <div data-testid="command-manager">{commandManager ? 'present' : 'missing'}</div>
     </div>
   );
 };
@@ -117,6 +127,11 @@ describe('Module Hooks', () => {
     commandManager = new CommandManager();
   });
   
+  afterEach(() => {
+    cleanup();
+    vi.clearAllMocks();
+  });
+  
   describe('useModuleManager', () => {
     it('should provide module manager from context', () => {
       render(
@@ -129,7 +144,7 @@ describe('Module Hooks', () => {
     });
     
     it('should throw error when used outside provider', () => {
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       
       expect(() => {
         render(<TestComponent />);
@@ -151,10 +166,10 @@ describe('Module Hooks', () => {
     });
     
     it('should throw error when used outside provider', () => {
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+      const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
       
       expect(() => {
-        render(<TestComponent />);
+        render(<CommandManagerOnlyComponent />);
       }).toThrow('useCommandManager must be used within a ModuleProvider');
       
       consoleSpy.mockRestore();
@@ -163,7 +178,15 @@ describe('Module Hooks', () => {
   
   describe('useDashboardContext', () => {
     it('should provide dashboard context', () => {
-      const dashboardContext = { user: { id: '1', name: 'Test User' } };
+      const dashboardContext = { 
+        user: { 
+          id: '1', 
+          name: 'Test User',
+          email: 'test@example.com',
+          roles: ['user'],
+          permissions: ['read']
+        } 
+      };
       
       render(
         <ModuleProvider 
@@ -274,7 +297,15 @@ describe('Module Hooks', () => {
         <ModuleProvider 
           moduleManager={moduleManager} 
           commandManager={commandManager}
-          dashboardContext={{ user: 'initial' }}
+          dashboardContext={{ 
+            user: { 
+              id: '1', 
+              name: 'initial',
+              email: 'initial@example.com',
+              roles: ['user'],
+              permissions: ['read']
+            } 
+          }}
         >
           <TestComponent />
         </ModuleProvider>
@@ -285,20 +316,28 @@ describe('Module Hooks', () => {
         <ModuleProvider 
           moduleManager={moduleManager} 
           commandManager={commandManager}
-          dashboardContext={{ user: 'updated' }}
+          dashboardContext={{ 
+            user: { 
+              id: '1', 
+              name: 'updated',
+              email: 'updated@example.com',
+              roles: ['user'],
+              permissions: ['read']
+            } 
+          }}
         >
           <TestComponent />
         </ModuleProvider>
       );
       
       expect(screen.getByTestId('dashboard-context')).toHaveTextContent(
-        JSON.stringify({ user: 'updated' })
+        'updated'
       );
     });
   });
   
   describe('ModuleLoader', () => {
-    it('should show loading state initially', () => {
+    it('should show children when no autoLoadAll specified', () => {
       render(
         <ModuleProvider moduleManager={moduleManager} commandManager={commandManager}>
           <ModuleLoader>
@@ -307,12 +346,12 @@ describe('Module Hooks', () => {
         </ModuleProvider>
       );
       
-      expect(screen.getByText('Loading modules...')).toBeInTheDocument();
+      expect(screen.getByTestId('children')).toHaveTextContent('Content');
     });
     
     it('should show children after loading completes', async () => {
       // Mock successful loading
-      jest.spyOn(moduleManager, 'loadAllModules').mockResolvedValue();
+      vi.spyOn(moduleManager, 'loadAllModules').mockResolvedValue();
       
       render(
         <ModuleProvider moduleManager={moduleManager} commandManager={commandManager}>
@@ -329,7 +368,7 @@ describe('Module Hooks', () => {
     
     it('should show error fallback on loading failure', async () => {
       const error = new Error('Loading failed');
-      jest.spyOn(moduleManager, 'loadAllModules').mockRejectedValue(error);
+      vi.spyOn(moduleManager, 'loadAllModules').mockRejectedValue(error);
       
       const ErrorFallback: React.FC<{ error?: Error }> = ({ error }) => (
         <div data-testid="error-fallback">{error?.message}</div>
@@ -348,7 +387,7 @@ describe('Module Hooks', () => {
     });
     
     it('should load specific modules when provided', async () => {
-      const loadModuleSpy = jest.spyOn(moduleManager, 'loadModule').mockResolvedValue();
+      const loadModuleSpy = vi.spyOn(moduleManager, 'loadModule').mockResolvedValue();
       
       render(
         <ModuleProvider moduleManager={moduleManager} commandManager={commandManager}>

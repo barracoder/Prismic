@@ -20,7 +20,19 @@
     "lint": "npm run lint -w packages/prismic-react && npm run lint -w packages/demo-website",
     "typecheck": "npm run typecheck -w packages/prismic-react",
     "preview": "npm run preview -w packages/demo-website",
-    "clean": "rm -rf packages/*/dist packages/*/coverage packages/*/node_modules"
+    "clean": "rm -rf packages/*/dist packages/*/coverage packages/*/node_modules",
+    "ci:simulate": "npm run ci:deps && npm run ci:lint && npm run ci:typecheck && npm run ci:test && npm run ci:build && npm run ci:e2e && npm run ci:package-health",
+    "ci:info": "echo '\n🚀 CI Simulation Tasks:\n  ci:simulate - Run complete CI pipeline\n  ci:deps - Install dependencies\n  ci:lint - Run linting\n  ci:typecheck - Run TypeScript checking\n  ci:test - Run unit tests\n  ci:test:coverage - Run tests with coverage\n  ci:build - Build packages\n  ci:e2e - Run E2E tests\n  ci:package-health - Check package health\n  ci:package-size - Check package size\n  ci:package-test - Test package installation\n'",
+    "ci:deps": "echo '🔧 Installing dependencies...' && npm ci",
+    "ci:lint": "echo '🔍 Running linting...' && npm run lint",
+    "ci:typecheck": "echo '📝 Running type checking...' && npm run typecheck",
+    "ci:test": "echo '🧪 Running unit tests...' && npm run test",
+    "ci:test:coverage": "echo '📊 Running tests with coverage...' && npm run test:coverage",
+    "ci:build": "echo '🏗️ Building packages...' && npm run build",
+    "ci:e2e": "echo '🎭 Running E2E tests...' && npm run test:e2e",
+    "ci:package-health": "npm run ci:package-size && npm run ci:package-test",
+    "ci:package-size": "echo '📦 Checking package size...' && cd packages/prismic-react && npm pack --dry-run && ls -la dist/",
+    "ci:package-test": "echo '🔬 Testing package installation...' && cd packages/prismic-react && npm pack && cd ../demo-website && npm install ../prismic-react/prismic-react-*.tgz && npm run build"
   },
   "dependencies": {
     "react": "^19.1.1",
