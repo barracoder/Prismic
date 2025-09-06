@@ -1,12 +1,10 @@
 import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
 import { 
   IModuleManager, 
-  ModuleConfig, 
   ModuleInfo, 
-  ModuleState,
   UIContributions,
   ICommand,
-  DashboardContext
+  type DashboardContext
 } from './interfaces';
 import { CommandManager, ContextEvaluator } from './commands';
 
@@ -23,7 +21,7 @@ const CommandManagerContext = createContext<CommandManager | null>(null);
 /**
  * Context for dashboard state
  */
-const DashboardContext = createContext<DashboardContext>({});
+const DashboardReactContext = createContext<DashboardContext>({});
 
 /**
  * Hook to access module manager
@@ -51,7 +49,7 @@ export function useCommandManager(): CommandManager {
  * Hook to access dashboard context
  */
 export function useDashboardContext(): DashboardContext {
-  return useContext(DashboardContext);
+  return useContext(DashboardReactContext);
 }
 
 /**
@@ -110,7 +108,6 @@ export function useCommands(): Record<string, ICommand> {
  * Hook to execute commands
  */
 export function useCommandExecutor() {
-  const commandManager = useCommandManager();
   const commands = useCommands();
   const dashboardContext = useDashboardContext();
   
@@ -236,7 +233,7 @@ export const ModuleProvider: React.FC<ModuleProviderProps> = ({
       CommandManagerContext.Provider,
       { value: commandManager },
       React.createElement(
-        DashboardContext.Provider,
+        DashboardReactContext.Provider,
         { value: dashboardContext },
         children
       )

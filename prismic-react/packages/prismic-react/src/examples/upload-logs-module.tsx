@@ -15,7 +15,7 @@ export class UploadLogsModule extends BaseReactModule {
   private uploadLogs: UploadLogEntry[] = [];
   private selectedLogIds: string[] = [];
   
-  protected async onInitialize(context: ModuleContext): Promise<void> {
+  protected async onInitialize(_context: ModuleContext): Promise<void> {
     // Register upload logs service
     this.registerService('uploadLogsService', () => new UploadLogsService());
     

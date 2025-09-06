@@ -1,4 +1,3 @@
-import React from 'react';
 import { 
   IReactModule, 
   ModuleConfig, 
@@ -61,11 +60,16 @@ export class ReactModuleLoader {
   /**
    * Validate that the loaded object implements IReactModule
    */
-  private isValidModule(obj: any): obj is IReactModule {
-    return obj &&
-           typeof obj.name === 'string' &&
-           typeof obj.priority === 'number' &&
-           typeof obj.initialize === 'function';
+  private isValidModule(obj: unknown): obj is IReactModule {
+    return obj !== null && 
+           obj !== undefined && 
+           typeof obj === 'object' &&
+           'name' in obj &&
+           'priority' in obj &&
+           'initialize' in obj &&
+           typeof (obj as IReactModule).name === 'string' &&
+           typeof (obj as IReactModule).priority === 'number' &&
+           typeof (obj as IReactModule).initialize === 'function';
   }
 }
 
@@ -163,6 +167,7 @@ export class ReactModuleManager implements IModuleManager {
       try {
         await this.loadModule(config.name);
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(`Failed to load module ${config.name}:`, error);
         // Continue loading other modules even if one fails
       }
@@ -236,20 +241,20 @@ export class ReactModuleManager implements IModuleManager {
       if (moduleInfo.module?.getUIContributions) {
         const moduleContributions = moduleInfo.module.getUIContributions();
         
-        if (moduleContributions.sidebars) {
-          contributions.sidebars!.push(...moduleContributions.sidebars);
+        if (moduleContributions.sidebars && contributions.sidebars) {
+          contributions.sidebars.push(...moduleContributions.sidebars);
         }
-        if (moduleContributions.menuItems) {
-          contributions.menuItems!.push(...moduleContributions.menuItems);
+        if (moduleContributions.menuItems && contributions.menuItems) {
+          contributions.menuItems.push(...moduleContributions.menuItems);
         }
-        if (moduleContributions.toolbarItems) {
-          contributions.toolbarItems!.push(...moduleContributions.toolbarItems);
+        if (moduleContributions.toolbarItems && contributions.toolbarItems) {
+          contributions.toolbarItems.push(...moduleContributions.toolbarItems);
         }
-        if (moduleContributions.statusBarItems) {
-          contributions.statusBarItems!.push(...moduleContributions.statusBarItems);
+        if (moduleContributions.statusBarItems && contributions.statusBarItems) {
+          contributions.statusBarItems.push(...moduleContributions.statusBarItems);
         }
-        if (moduleContributions.contextMenus) {
-          contributions.contextMenus!.push(...moduleContributions.contextMenus);
+        if (moduleContributions.contextMenus && contributions.contextMenus) {
+          contributions.contextMenus.push(...moduleContributions.contextMenus);
         }
       }
     });
@@ -349,6 +354,7 @@ export class ReactModuleManager implements IModuleManager {
       try {
         listener(name, newState);
       } catch (err) {
+        // eslint-disable-next-line no-console
         console.error('Error in module state change listener:', err);
       }
     });

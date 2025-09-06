@@ -4,7 +4,6 @@ import {
   DashboardModuleCatalog,
   ModuleCatalog 
 } from '../../../src/lib/modules/module-catalog';
-import { ModuleConfig } from '../../../src/lib/modules/interfaces';
 
 // Mock fetch for testing
 global.fetch = vi.fn();
@@ -131,7 +130,7 @@ describe('Module Catalog', () => {
         }
       ];
       
-      testCases.forEach(({ config, error }, index) => {
+      testCases.forEach(({ config, error }) => {
         const catalog: ModuleCatalog = {
           modules: [config as any]
         };

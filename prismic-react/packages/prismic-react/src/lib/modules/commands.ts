@@ -1,4 +1,3 @@
-import React from 'react';
 import { ICommand, ContextCondition, DashboardContext } from './interfaces';
 
 /**
@@ -40,6 +39,8 @@ export abstract class BaseCommand implements ICommand {
       try {
         handler();
       } catch (error) {
+        // Log errors in handler execution for debugging
+        // eslint-disable-next-line no-console
         console.error('Error in canExecuteChanged handler:', error);
       }
     });
@@ -211,7 +212,7 @@ export class ContextEvaluator {
    * Evaluate a single context condition
    */
   private static evaluateCondition(condition: ContextCondition, context: DashboardContext): boolean {
-    const contextValue = (context as any)[condition.key];
+    const contextValue = (context as Record<string, unknown>)[condition.key];
     
     switch (condition.operator) {
       case 'equals':
@@ -233,6 +234,7 @@ export class ContextEvaluator {
         return contextValue === undefined || contextValue === null;
       
       default:
+        // eslint-disable-next-line no-console
         console.warn(`Unknown context condition operator: ${condition.operator}`);
         return false;
     }
@@ -262,6 +264,7 @@ export class DashboardCommands {
         'Refresh Logs',
         async () => {
           // Implementation would be injected via context or service
+          // eslint-disable-next-line no-console
           console.log('Refreshing upload logs...');
         },
         undefined,
@@ -275,6 +278,7 @@ export class DashboardCommands {
         async (params) => {
           const logId = params?.logId;
           if (logId) {
+            // eslint-disable-next-line no-console
             console.log(`Deleting log: ${logId}`);
           }
         },
@@ -291,6 +295,7 @@ export class DashboardCommands {
         async (params) => {
           const logId = params?.logId;
           if (logId) {
+            // eslint-disable-next-line no-console
             console.log(`Retrying upload: ${logId}`);
           }
         },
@@ -306,6 +311,7 @@ export class DashboardCommands {
         this.EXPORT_LOGS,
         'Export Logs',
         async () => {
+          // eslint-disable-next-line no-console
           console.log('Exporting logs...');
         },
         undefined,
@@ -319,6 +325,7 @@ export class DashboardCommands {
         async (params) => {
           const logIds = params?.logIds as string[];
           if (logIds && logIds.length > 0) {
+            // eslint-disable-next-line no-console
             console.log(`Bulk deleting logs: ${logIds.join(', ')}`);
           }
         },

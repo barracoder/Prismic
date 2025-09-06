@@ -19,6 +19,8 @@ export default tseslint.config(
         ecmaFeatures: {
           jsx: true,
         },
+        tsconfigRootDir: import.meta.dirname,
+        project: './tsconfig.json',
       },
     },
     rules: {
@@ -36,6 +38,21 @@ export default tseslint.config(
       
       // Allow non-null assertions when we know better
       '@typescript-eslint/no-non-null-assertion': 'warn',
+    },
+  },
+  // More lenient rules for examples and test files
+  {
+    files: ['src/examples/**/*', '__tests__/**/*', '**/*.test.ts', '**/*.test.tsx'],
+    languageOptions: {
+      parserOptions: {
+        tsconfigRootDir: import.meta.dirname,
+        project: null, // Don't use project for test files
+      },
+    },
+    rules: {
+      'no-console': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-non-null-assertion': 'off',
     },
   },
   {

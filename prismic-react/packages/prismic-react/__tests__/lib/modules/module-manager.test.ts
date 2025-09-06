@@ -26,7 +26,7 @@ class TestModule implements IReactModule {
     this.dependencies = dependencies;
   }
   
-  async initialize(context: ModuleContext): Promise<void> {
+  async initialize(_context: ModuleContext): Promise<void> {
     this.initializeCalled = true;
   }
   

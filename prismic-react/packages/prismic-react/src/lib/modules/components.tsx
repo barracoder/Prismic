@@ -3,10 +3,9 @@ import {
   SidebarContribution, 
   MenuItemContribution, 
   ToolbarItemContribution,
-  StatusBarItemContribution,
-  ContextMenuContribution 
+  StatusBarItemContribution
 } from './interfaces';
-import { useUIContributions, useCommandExecutor, useDashboardContext } from './hooks';
+import { useUIContributions, useCommandExecutor } from './hooks';
 
 /**
  * Dynamic sidebar renderer that displays module contributions
@@ -18,7 +17,6 @@ interface DynamicSidebarProps {
 
 export const DynamicSidebar: React.FC<DynamicSidebarProps> = ({ position, className }) => {
   const contributions = useUIContributions();
-  const { executeCommand, canExecuteCommand } = useCommandExecutor();
   
   const sidebars = contributions.sidebars?.filter(sidebar => sidebar.position === position) || [];
   
@@ -104,6 +102,7 @@ export const DynamicMenuBar: React.FC<DynamicMenuBarProps> = ({ className }) => 
       try {
         await executeCommand(item.command);
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(`Error executing command ${item.command}:`, error);
       }
     }
@@ -205,6 +204,7 @@ export const DynamicToolbar: React.FC<DynamicToolbarProps> = ({ className }) => 
       try {
         await executeCommand(item.command);
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(`Error executing command ${item.command}:`, error);
       }
     }
@@ -280,6 +280,7 @@ export const DynamicStatusBar: React.FC<DynamicStatusBarProps> = ({ className })
       try {
         await executeCommand(item.command);
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(`Error executing command ${item.command}:`, error);
       }
     }

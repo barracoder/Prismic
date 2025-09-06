@@ -11,7 +11,6 @@ describe('React Hooks', () => {
   let container: Container;
   let eventAggregator: EventAggregator;
   let regionManager: RegionManager;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let wrapper: any;
 
   beforeEach(() => {

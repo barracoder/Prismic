@@ -9,11 +9,10 @@ import {
   ModuleLoader,
   DashboardShell,
   DashboardCommands,
-  ModuleCatalogLoader,
   DashboardModuleCatalog,
   DashboardContext,
   UploadLogEntry
-} from '../src/index';
+} from '../index';
 
 /**
  * Complete example of a dashboard application with dynamic module loading

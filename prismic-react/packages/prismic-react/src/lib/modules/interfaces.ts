@@ -74,7 +74,7 @@ export interface IReactModule {
   /**
    * Get components that can be dynamically loaded
    */
-  getComponents?(): Record<string, React.ComponentType<any>>;
+  getComponents?(): Record<string, React.ComponentType<unknown>>;
 
   /**
    * Get UI contributions for dashboard elements
@@ -109,8 +109,8 @@ export interface UIContributions {
 export interface SidebarContribution {
   id: string;
   title: string;
-  component: React.ComponentType<any>;
-  icon?: React.ComponentType<any> | string;
+  component: React.ComponentType<unknown>;
+  icon?: React.ComponentType<unknown> | string;
   position: 'left' | 'right';
   priority: number;
   context?: ContextCondition[];
@@ -126,7 +126,7 @@ export interface MenuItemContribution {
   label: string;
   command: string;
   group?: string;
-  icon?: React.ComponentType<any> | string;
+  icon?: React.ComponentType<unknown> | string;
   shortcut?: string;
   context?: ContextCondition[];
   submenu?: MenuItemContribution[];
@@ -140,7 +140,7 @@ export interface ToolbarItemContribution {
   id: string;
   command: string;
   tooltip?: string;
-  icon?: React.ComponentType<any> | string;
+  icon?: React.ComponentType<unknown> | string;
   text?: string;
   group?: string;
   priority: number;
@@ -177,7 +177,7 @@ export interface ContextMenuContribution {
 export interface ContextCondition {
   key: string;
   operator: 'equals' | 'not-equals' | 'contains' | 'not-contains' | 'exists' | 'not-exists';
-  value?: any;
+  value?: unknown;
 }
 
 /**

@@ -1,4 +1,5 @@
 import { IReactModule, ModuleContext, UIContributions, ICommand } from './interfaces';
+import { BaseEvent } from '../core/event-aggregator';
 
 /**
  * Base module class providing common functionality
@@ -34,7 +35,7 @@ export abstract class BaseReactModule implements IReactModule {
   /**
    * Override in derived classes for custom initialization
    */
-  protected async onInitialize(context: ModuleContext): Promise<void> {
+  protected async onInitialize(_context: ModuleContext): Promise<void> {
     // Override in derived classes
   }
   
@@ -48,7 +49,7 @@ export abstract class BaseReactModule implements IReactModule {
   /**
    * Get components that can be dynamically loaded
    */
-  public getComponents?(): Record<string, React.ComponentType<any>>;
+  public getComponents?(): Record<string, React.ComponentType<unknown>>;
   
   /**
    * Get UI contributions for dashboard elements
@@ -93,7 +94,7 @@ export abstract class BaseReactModule implements IReactModule {
   /**
    * Helper method to subscribe to events
    */
-  protected subscribeToEvent<T>(
+  protected subscribeToEvent<T extends BaseEvent>(
     eventType: string,
     handler: (event: T) => void | Promise<void>
   ): () => void {
@@ -108,7 +109,7 @@ export abstract class BaseReactModule implements IReactModule {
   /**
    * Helper method to publish events
    */
-  protected async publishEvent<T>(event: T): Promise<void> {
+  protected async publishEvent<T extends BaseEvent>(event: T): Promise<void> {
     if (!this.context) {
       throw new Error('Cannot publish events before module initialization');
     }

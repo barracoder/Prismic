@@ -8,7 +8,7 @@ interface ModuleInfo {
 }
 
 export const ModuleSystemDemo: React.FC = () => {
-  const [modules] = useState<ModuleInfo[]>([
+  const [modules, setModules] = useState<ModuleInfo[]>([
     {
       name: 'UploadLogsModule',
       status: 'loaded',
@@ -67,9 +67,22 @@ export const ModuleSystemDemo: React.FC = () => {
     }
   };
 
-  const handleLoadModule = (moduleName: string) => {
-    // Simulate module loading (in real implementation this would use the module manager)
-    console.log(`Loading module: ${moduleName}`);
+  const handleLoadModule = async (moduleName: string) => {
+    // Simulate module loading with state updates
+    setModules(prev => prev.map(module => 
+      module.name === moduleName 
+        ? { ...module, status: 'loading' as const }
+        : module
+    ));
+    
+    // Simulate async loading delay
+    setTimeout(() => {
+      setModules(prev => prev.map(module => 
+        module.name === moduleName 
+          ? { ...module, status: 'loaded' as const }
+          : module
+      ));
+    }, 1500);
     
     // In real implementation:
     // await moduleManager.loadModule(moduleName);
@@ -156,6 +169,17 @@ export const ModuleSystemDemo: React.FC = () => {
                   >
                     Load Module
                   </button>
+                )}
+                {selectedModuleInfo.status === 'loading' && (
+                  <span style={{ 
+                    padding: '0.5rem 1rem',
+                    backgroundColor: '#ffc107',
+                    color: 'white',
+                    borderRadius: '4px',
+                    fontSize: '0.9rem'
+                  }}>
+                    ⏳ Loading...
+                  </span>
                 )}
                 {selectedModuleInfo.status === 'loaded' && (
                   <span style={{ 
