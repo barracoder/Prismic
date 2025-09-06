@@ -24,6 +24,7 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
+        cache-dependency-path: 'prismic-react/package-lock.json'
         registry-url: 'https://registry.npmjs.org'
     
     - name: Install dependencies
