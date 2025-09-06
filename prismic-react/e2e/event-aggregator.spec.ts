@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test.describe('EventAggregator Demo', () => {
   test('should demonstrate event publishing and subscribing', async ({ page }) => {
-    await page.goto('http://localhost:5174');
+    await page.goto('/');
     await page.waitForLoadState('networkidle');
 
     // Find the Event Aggregator Demo section
@@ -62,7 +62,7 @@ test.describe('EventAggregator Demo', () => {
   });
 
   test('should show event timestamps and data', async ({ page }) => {
-    await page.goto('http://localhost:5174');
+    await page.goto('/');
     await page.waitForLoadState('networkidle');
 
     const eventSection = page.locator('section:has(h2:text("Event Aggregator Demo"))');
