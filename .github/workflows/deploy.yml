@@ -4,8 +4,8 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'packages/demo-website/**'
-      - 'packages/prismic-react/**'
+      - 'prismic-react/packages/demo-website/**'
+      - 'prismic-react/packages/prismic-react/**'
   workflow_dispatch:
 
 env:
@@ -27,20 +27,26 @@ jobs:
         cache: 'npm'
     
     - name: Install dependencies
-      run: npm ci
+      run: |
+        cd prismic-react
+        npm ci
     
     - name: Build library
-      run: npm run build -w packages/prismic-react
+      run: |
+        cd prismic-react
+        npm run build -w packages/prismic-react
     
     - name: Build demo website
-      run: npm run build -w packages/demo-website
+      run: |
+        cd prismic-react
+        npm run build -w packages/demo-website
     
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       if: github.ref == 'refs/heads/main'
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./packages/demo-website/dist
+        publish_dir: ./prismic-react/packages/demo-website/dist
         cname: prismic-react-demo.example.com  # Update with your custom domain if needed
 
   lighthouse:
@@ -60,21 +66,25 @@ jobs:
         cache: 'npm'
     
     - name: Install dependencies
-      run: npm ci
+      run: |
+        cd prismic-react
+        npm ci
     
     - name: Build demo website
       run: |
+        cd prismic-react
         npm run build -w packages/prismic-react
         npm run build -w packages/demo-website
     
     - name: Serve website locally
       run: |
-        cd packages/demo-website
+        cd prismic-react/packages/demo-website
         npx serve -s dist -l 3000 &
         sleep 5
     
     - name: Run Lighthouse CI
       run: |
+        cd prismic-react
         npm install -g @lhci/cli@0.14.x
         lhci autorun
       env:

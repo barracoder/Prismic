@@ -29,26 +29,36 @@ jobs:
         cache: 'npm'
     
     - name: Install dependencies
-      run: npm ci
+      run: |
+        cd prismic-react
+        npm ci
     
     - name: Run linting
-      run: npm run lint
+      run: |
+        cd prismic-react
+        npm run lint
     
     - name: Run type checking
-      run: npm run typecheck -w packages/prismic-react
+      run: |
+        cd prismic-react
+        npm run typecheck -w packages/prismic-react
     
     - name: Run unit tests
-      run: npm run test
+      run: |
+        cd prismic-react
+        npm run test
     
     - name: Run unit tests with coverage
-      run: npm run test:coverage
+      run: |
+        cd prismic-react
+        npm run test:coverage
       if: matrix.node-version == 18
     
     - name: Upload coverage reports
       uses: codecov/codecov-action@v4
       if: matrix.node-version == 18
       with:
-        file: ./packages/prismic-react/coverage/coverage-final.json
+        file: ./prismic-react/packages/prismic-react/coverage/coverage-final.json
         flags: unittests
         name: codecov-umbrella
       env:
@@ -69,23 +79,31 @@ jobs:
         cache: 'npm'
     
     - name: Install dependencies
-      run: npm ci
+      run: |
+        cd prismic-react
+        npm ci
     
     - name: Install Playwright browsers
-      run: npx playwright install --with-deps
+      run: |
+        cd prismic-react
+        npx playwright install --with-deps
     
     - name: Build packages
-      run: npm run build
+      run: |
+        cd prismic-react
+        npm run build
     
     - name: Run E2E tests
-      run: npm run test:e2e
+      run: |
+        cd prismic-react
+        npm run test:e2e
     
     - name: Upload Playwright report
       uses: actions/upload-artifact@v4
       if: failure()
       with:
         name: playwright-report
-        path: playwright-report/
+        path: prismic-react/playwright-report/
         retention-days: 30
 
   build:
@@ -103,21 +121,27 @@ jobs:
         cache: 'npm'
     
     - name: Install dependencies
-      run: npm ci
+      run: |
+        cd prismic-react
+        npm ci
     
     - name: Build library
-      run: npm run build -w packages/prismic-react
+      run: |
+        cd prismic-react
+        npm run build -w packages/prismic-react
     
     - name: Build demo website
-      run: npm run build -w packages/demo-website
+      run: |
+        cd prismic-react
+        npm run build -w packages/demo-website
     
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
         name: build-artifacts
         path: |
-          packages/prismic-react/dist/
-          packages/demo-website/dist/
+          prismic-react/packages/prismic-react/dist/
+          prismic-react/packages/demo-website/dist/
         retention-days: 7
 
   package-health:
@@ -135,20 +159,24 @@ jobs:
         cache: 'npm'
     
     - name: Install dependencies
-      run: npm ci
+      run: |
+        cd prismic-react
+        npm ci
     
     - name: Build library
-      run: npm run build -w packages/prismic-react
+      run: |
+        cd prismic-react
+        npm run build -w packages/prismic-react
     
     - name: Check package size
       run: |
-        cd packages/prismic-react
+        cd prismic-react/packages/prismic-react
         npm pack --dry-run
         ls -la dist/
     
     - name: Test package installation
       run: |
-        cd packages/prismic-react
+        cd prismic-react/packages/prismic-react
         npm pack
         cd ../demo-website
         npm install ../prismic-react/prismic-react-*.tgz

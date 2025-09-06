@@ -33,11 +33,13 @@ jobs:
     
     - name: Update dependencies
       run: |
+        cd prismic-react
         npx npm-check-updates -u
         npm install
     
     - name: Run tests
       run: |
+        cd prismic-react
         npm run lint || true
         npm run test || true
         npm run typecheck -w packages/prismic-react || true

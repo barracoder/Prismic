@@ -1,0 +1,131 @@
+name: Conditional Builds with Glob Patterns
+
+on:
+  push:
+    branches: [ main, develop ]
+    # Glob patterns in path filters - only trigger when specific files change
+    paths:
+      - 'prismic-react/**'                    # Any file in prismic-react folder
+      - 'src/**/*.ts'                         # Any TypeScript file in src (if you have core src)
+      - '!src/**/*.test.ts'                   # Exclude test files
+      - 'prismic-react/**/package.json'       # package.json in any prismic-react subfolder
+      - 'prismic-react/packages/**/*.ts'      # TypeScript files in packages
+      - 'prismic-react/packages/**/*.tsx'     # React TypeScript files
+  
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'prismic-react/packages/prismic-react/src/**'    # Only library source changes
+      - 'prismic-react/packages/demo-website/src/**'     # Only demo source changes
+      - 'prismic-react/packages/*/package.json'          # Package.json changes
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      core-changed: ${{ steps.changes.outputs.core }}
+      react-changed: ${{ steps.changes.outputs.react }}
+      demo-changed: ${{ steps.changes.outputs.demo }}
+      config-changed: ${{ steps.changes.outputs.config }}
+      docs-changed: ${{ steps.changes.outputs.docs }}
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    # Use dorny/paths-filter to detect changes with glob patterns
+    - uses: dorny/paths-filter@v2
+      id: changes
+      with:
+        filters: |
+          core:
+            - 'src/**'
+            - 'package.json'
+          react:
+            - 'prismic-react/packages/prismic-react/**'
+            - '!prismic-react/packages/prismic-react/**/*.test.*'
+            - '!prismic-react/packages/prismic-react/**/__tests__/**'
+          demo:
+            - 'prismic-react/packages/demo-website/**'
+          config:
+            - 'prismic-react/*.json'
+            - 'prismic-react/packages/**/package.json'
+            - 'prismic-react/packages/**/tsconfig*.json'
+            - 'prismic-react/packages/**/vite.config.*'
+            - 'prismic-react/packages/**/playwright.config.*'
+          docs:
+            - '**/*.md'
+            - 'docs/**'
+
+  build-core:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.core == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build core framework
+      run: |
+        echo "Building core framework..."
+        echo "Core files changed, running core build"
+
+  build-react-lib:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.react == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+    
+    - name: Build React package
+      run: |
+        cd prismic-react
+        npm ci
+        npm run build -w packages/prismic-react
+
+  build-demo:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.demo == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+        cache: 'npm'
+    
+    - name: Build demo website
+      run: |
+        cd prismic-react
+        npm ci
+        npm run build -w packages/demo-website
+
+  config-check:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.config == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    - name: Validate configuration files
+      run: |
+        echo "Configuration files changed, validating..."
+        # Add your config validation logic here
+
+  update-docs:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.docs == 'true'
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    - name: Update documentation
+      run: |
+        echo "Documentation changed, updating..."
+        # Add your documentation build logic here
