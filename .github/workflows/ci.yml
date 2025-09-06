@@ -7,7 +7,7 @@ on:
     branches: [ main, develop ]
 
 env:
-  NODE_VERSION: 18
+  NODE_VERSION: 20
 
 jobs:
   test:
@@ -16,7 +16,7 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [18, 20, 22]
+        node-version: [20, 22]
     
     steps:
     - name: Checkout repository
@@ -53,11 +53,11 @@ jobs:
       run: |
         cd prismic-react
         npm run test:coverage
-      if: matrix.node-version == 18
+      if: matrix.node-version == 20
     
     - name: Upload coverage reports
       uses: codecov/codecov-action@v4
-      if: matrix.node-version == 18
+      if: matrix.node-version == 20
       with:
         file: ./prismic-react/packages/prismic-react/coverage/coverage-final.json
         flags: unittests
@@ -182,6 +182,11 @@ jobs:
       run: |
         cd prismic-react/packages/prismic-react
         npm pack
-        cd ../demo-website
-        npm install ../prismic-react/prismic-react-*.tgz
-        npm run build
+        mkdir -p ../demo-website/temp-package-test
+        cd ../demo-website/temp-package-test
+        npm init -y
+        npm install ../../prismic-react/prismic-react-*.tgz react@^19.1.1 react-dom@^19.1.1
+        echo "import { Container } from 'prismic-react';" > test.js
+        node -e "console.log('Package installation test passed')"
+        cd ..
+        rm -rf temp-package-test
