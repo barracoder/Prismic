@@ -1,15 +1,16 @@
 {
   "name": "prismic-react",
   "version": "0.1.0",
+  "type": "module",
   "description": "A React adaptation of the Web Prism framework for dependency injection, event aggregation, and region-based UI composition",
-  "main": "dist/index.js",
+  "main": "dist/index.cjs",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "require": "./dist/index.cjs"
     }
   },
   "files": [

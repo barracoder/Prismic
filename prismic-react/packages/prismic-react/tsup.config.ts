@@ -9,4 +9,11 @@ export default defineConfig({
   external: ['react', 'react-dom'],
   target: 'es2020',
   outDir: 'dist',
+  cjsInterop: true,
+  splitting: false,
+  outExtension({ format }) {
+    return {
+      js: format === 'cjs' ? '.cjs' : '.mjs'
+    }
+  },
 });
