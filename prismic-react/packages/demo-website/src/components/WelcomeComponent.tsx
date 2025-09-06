@@ -7,7 +7,7 @@ interface WelcomeProps {
 
 export const WelcomeComponent: React.FC<WelcomeProps> = ({ 
   title = "Welcome to Prismic React", 
-  subtitle = "A React adaptation of the Web Prism framework" 
+  subtitle = "A React adaptation of the Prismic framework" 
 }) => {
   return (
     <div style={{ 

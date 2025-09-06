@@ -95,7 +95,7 @@ function App() {
       <div className="app">
         <header className="app-header">
           <h1>Prismic React Demo</h1>
-          <p>A demonstration of the React adaptation of Web Prism framework</p>
+          <p>A demonstration of the React adaptation of Prismic React framework</p>
         </header>
 
         <main className="app-main">

@@ -1,0 +1,84 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  NODE_VERSION: 18
+
+jobs:
+  release:
+    name: Release Package
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        registry-url: 'https://registry.npmjs.org'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run all tests
+      run: |
+        npm run lint
+        npm run test
+        npm run typecheck -w packages/prismic-react
+    
+    - name: Build library
+      run: npm run build -w packages/prismic-react
+    
+    - name: Extract version from tag
+      id: version
+      run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+    
+    - name: Update package version
+      run: |
+        cd packages/prismic-react
+        npm version ${{ steps.version.outputs.VERSION }} --no-git-tag-version
+    
+    - name: Publish to NPM
+      run: |
+        cd packages/prismic-react
+        npm publish --access public
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    
+    - name: Create GitHub Release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ steps.version.outputs.VERSION }}
+        draft: false
+        prerelease: false
+        body: |
+          ## Changes in this Release
+          
+          Please see the [CHANGELOG.md](CHANGELOG.md) for detailed changes.
+          
+          ## Package Information
+          
+          - **Version**: ${{ steps.version.outputs.VERSION }}
+          - **NPM Package**: [prismic-react](https://www.npmjs.com/package/prismic-react)
+          
+          ## Installation
+          
+          ```bash
+          npm install prismic-react
+          # or
+          yarn add prismic-react
+          # or  
+          pnpm add prismic-react
+          ```

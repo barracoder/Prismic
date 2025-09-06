@@ -55,26 +55,26 @@ export const EventPublisherComponent: React.FC = () => {
     setLastAction(action);
   };
 
-  const handleSpecialAction = () => {
+  const handleSpecialAction = async () => {
     // Publish multiple events in sequence
-    eventAggregator.publish(new NotificationEvent('Starting special action...', 'info'));
+    await eventAggregator.publish(new NotificationEvent('Starting special action...', 'info'));
     
-    setTimeout(() => {
-      eventAggregator.publish(new UserActionEvent('SPECIAL_PROCESS', { 
+    setTimeout(async () => {
+      await eventAggregator.publish(new UserActionEvent('SPECIAL_PROCESS', { 
         step: 1,
         description: 'Processing data'
       }));
     }, 500);
     
-    setTimeout(() => {
-      eventAggregator.publish(new UserActionEvent('SPECIAL_PROCESS', { 
+    setTimeout(async () => {
+      await eventAggregator.publish(new UserActionEvent('SPECIAL_PROCESS', { 
         step: 2,
         description: 'Finalizing'
       }));
     }, 1000);
     
-    setTimeout(() => {
-      eventAggregator.publish(new NotificationEvent('Special action completed!', 'success'));
+    setTimeout(async () => {
+      await eventAggregator.publish(new NotificationEvent('Special action completed!', 'success'));
     }, 1500);
     
     setLastAction('Special Process');
