@@ -12,6 +12,7 @@ import { CounterComponent } from './components/CounterComponent';
 import { HookTestComponent } from './components/HookTestComponent';
 import { EventPublisherComponent } from './components/EventPublisherComponent';
 import { EventSubscriberComponent } from './components/EventSubscriberComponent';
+import { ModuleSystemDemo } from './components/ModuleSystemDemo';
 import './App.css';
 
 function App() {
@@ -129,9 +130,18 @@ function App() {
               <li>✅ Region-based UI composition using React Portals</li>
               <li>✅ React Hooks for framework integration</li>
               <li>✅ TypeScript support with strict type checking</li>
-              <li>🔄 Module system (coming next)</li>
+              <li>✅ Dynamic Module Loading System</li>
+              <li>✅ Command Pattern Implementation</li>
+              <li>✅ Context-Sensitive UI Contributions</li>
+              <li>✅ Module Lifecycle Management</li>
             </ul>
             <HookTestComponent />
+          </section>
+
+          <section className="demo-section">
+            <h2>Module Loading System</h2>
+            <p>This demonstrates the dynamic module loading system inspired by WPF Prism:</p>
+            <ModuleSystemDemo />
           </section>
 
           <section className="demo-section">

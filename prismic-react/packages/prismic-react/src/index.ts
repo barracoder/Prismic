@@ -4,3 +4,6 @@ export { RegionManager, SingleComponentRegion, MultiComponentRegion, BaseRegion 
 export { ContainerContext, EventAggregatorContext, RegionManagerContext } from './lib/react/contexts';
 export { useContainer, useEventAggregator, useRegionManager } from './lib/react/hooks';
 export { RegionRenderer, PrismicFrameworkProvider } from './lib/react/RegionComponents';
+
+// Export module system
+export * from './lib/modules';

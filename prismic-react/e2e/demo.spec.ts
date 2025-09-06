@@ -57,7 +57,7 @@ test.describe('Prismic React Framework Demo', () => {
     await expect(page.locator('[data-region="content"]')).toBeVisible();
     
     // Check if counter component is rendered
-    await expect(page.locator('h3')).toContainText('Interactive Counter');
+    await expect(page.locator('[data-region="content"] h3')).toContainText('Interactive Counter');
     
     // Check initial counter value (should be 5 based on our setup)
     await expect(page.locator('[data-region="content"] div[style*="font-size: 2rem"]')).toContainText('5');
@@ -113,7 +113,7 @@ test.describe('Prismic React Framework Demo', () => {
     
     // Check that demo sections are visible
     const demoSections = page.locator('.demo-section');
-    await expect(demoSections).toHaveCount(4); // Welcome, Content, Features, Event Aggregator
+    await expect(demoSections).toHaveCount(5); // Welcome, Content, Features, Module Loading, Event Aggregator
     
     // Check that region containers are present
     await expect(page.locator('.region-container')).toHaveCount(2);
@@ -137,8 +137,8 @@ test.describe('Prismic React Framework Demo', () => {
   test('should be responsive and accessible', async ({ page }) => {
     // Check that page is accessible - use specific selectors
     await expect(page.locator('.app-header h1')).toBeVisible();
-    await expect(page.locator('h2')).toHaveCount(4); // Welcome, Content, Features, Event Aggregator
-    await expect(page.locator('h3')).toHaveCount(1);
+    await expect(page.locator('h2')).toHaveCount(5); // Welcome, Content, Features, Module Loading, Event Aggregator
+    await expect(page.locator('h3')).toHaveCount(2); // Interactive Counter + Module System Dashboard
     
     // Check that buttons are accessible
     const buttons = page.locator('[data-region="content"] button');
