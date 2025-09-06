@@ -72,8 +72,8 @@ function App() {
         }
 
         setIsInitialized(true);
-      } catch (error) {
-        console.error('Error initializing regions:', error);
+      } catch {
+        // Silent error handling for demo
       }
     }
 
