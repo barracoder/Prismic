@@ -23,7 +23,7 @@ export function PrismicFrameworkProvider({
   regionManager,
   container,
   eventAggregator,
-}: PrismicFrameworkProviderProps): JSX.Element {
+}: PrismicFrameworkProviderProps): React.JSX.Element {
   return (
     <ContainerContext.Provider value={container}>
       <EventAggregatorContext.Provider value={eventAggregator}>
@@ -45,7 +45,7 @@ export interface RegionRendererProps {
 /**
  * Component that renders a region's components using React Portal
  */
-export function RegionRenderer({ regionName }: RegionRendererProps): JSX.Element | null {
+export function RegionRenderer({ regionName }: RegionRendererProps): React.JSX.Element | null {
   const regionManager = React.useContext(RegionManagerContext);
   const [components, setComponents] = useState<ComponentConfig[]>([]);
   const [region, setRegion] = useState<IRegion | undefined>();

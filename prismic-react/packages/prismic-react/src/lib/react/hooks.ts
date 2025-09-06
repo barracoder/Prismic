@@ -47,9 +47,15 @@ export function useRegion(regionName: string): IRegion | undefined {
   );
 
   useEffect(() => {
-    // Check if region exists when the effect runs
-    const currentRegion = regionManager.getRegion(regionName);
-    setRegion(currentRegion);
+    // Update region when the name changes
+    setRegion(regionManager.getRegion(regionName));
+
+    // Listen for region changes
+    const removeListener = regionManager.addChangeListener(() => {
+      setRegion(regionManager.getRegion(regionName));
+    });
+
+    return removeListener;
   }, [regionManager, regionName]);
 
   return region;

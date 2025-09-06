@@ -41,7 +41,11 @@ export class EventAggregator {
       this.subscriptions.set(eventType, []);
     }
 
-    const handlers = this.subscriptions.get(eventType)!;
+    const handlers = this.subscriptions.get(eventType);
+    if (!handlers) {
+      return { unsubscribe: () => {} };
+    }
+    
     handlers.push(handler as EventHandler<BaseEvent>);
 
     return {
@@ -59,7 +63,11 @@ export class EventAggregator {
    */
   async publish<T extends BaseEvent>(event: T): Promise<void> {
     // Handle both eventType and type properties for compatibility
-    const eventType = (event as any).eventType || (event as any).type;
+    const eventType = (event as BaseEvent & { type?: string }).eventType || (event as BaseEvent & { type?: string }).type;
+    if (!eventType) {
+      return;
+    }
+    
     const handlers = this.subscriptions.get(eventType);
     if (!handlers || handlers.length === 0) {
       return;
@@ -69,6 +77,7 @@ export class EventAggregator {
       try {
         await handler(event);
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(`Error in event handler for ${eventType}:`, error);
       }
     });
@@ -81,7 +90,11 @@ export class EventAggregator {
    */
   publishSync<T extends BaseEvent>(event: T): void {
     // Handle both eventType and type properties for compatibility
-    const eventType = (event as any).eventType || (event as any).type;
+    const eventType = (event as BaseEvent & { type?: string }).eventType || (event as BaseEvent & { type?: string }).type;
+    if (!eventType) {
+      return;
+    }
+    
     const handlers = this.subscriptions.get(eventType);
     if (!handlers || handlers.length === 0) {
       return;
@@ -91,6 +104,7 @@ export class EventAggregator {
       try {
         handler(event);
       } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(`Error in event handler for ${eventType}:`, error);
       }
     });

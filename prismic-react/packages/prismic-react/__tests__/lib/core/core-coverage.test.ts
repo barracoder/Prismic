@@ -1,20 +1,18 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { Container } from '../../../src/lib/core/container';
-import { EventAggregator } from '../../../src/lib/core/event-aggregator';
+import { EventAggregator, BaseEvent } from '../../../src/lib/core/event-aggregator';
 import { RegionManager, SingleComponentRegion, MultiComponentRegion } from '../../../src/lib/core/regions';
 
 // Test event classes
-interface TestEventWithValue {
-  type: string;
-  timestamp: Date;
-  value: number;
+class TestEvent extends BaseEvent {
+  constructor(type: string, public data?: unknown) {
+    super(type);
+  }
 }
 
-class TestEvent {
-  public type: string;
-  public timestamp = new Date();
-  constructor(type: string, public data?: unknown) {
-    this.type = type;
+class SyncTestEvent extends BaseEvent {
+  constructor(public value: number) {
+    super('sync-test');
   }
 }
 
@@ -151,14 +149,14 @@ describe('Core Framework Coverage Tests', () => {
       const results: number[] = [];
       
       eventAggregator.subscribe('sync-test', (event) => {
-        results.push((event as TestEventWithValue).value * 2);
+        results.push((event as unknown as SyncTestEvent).value * 2);
       });
       
       eventAggregator.subscribe('sync-test', (event) => {
-        results.push((event as TestEventWithValue).value * 3);
+        results.push((event as unknown as SyncTestEvent).value * 3);
       });
       
-      eventAggregator.publishSync({ type: 'sync-test', timestamp: new Date(), value: 5 });
+      eventAggregator.publishSync(new SyncTestEvent(5));
       
       expect(results).toEqual([10, 15]);
     });
@@ -240,23 +238,25 @@ describe('Core Framework Coverage Tests', () => {
       const component1 = {
         id: 'comp1',
         component: mockComponent,
+        props: {},
         isActive: false
       };
       
       region.addComponent(component1);
       expect(region.activeComponent?.id).toBe('comp1');
-      expect(region.components).toHaveLength(1);
+      expect(region.getComponents()).toHaveLength(1);
       
       // Adding another component to a single region allows both (current implementation)
       const mockComponent2 = () => 'Test Component 2';
       const component2 = {
         id: 'comp2',
         component: mockComponent2,
+        props: {},
         isActive: false
       };
       region.addComponent(component2);
       expect(region.activeComponent?.id).toBe('comp1'); // First component stays active
-      expect(region.components).toHaveLength(2); // Both components exist
+      expect(region.getComponents()).toHaveLength(2); // Both components exist
     });
 
     it('should handle multi-component regions', () => {
@@ -270,26 +270,28 @@ describe('Core Framework Coverage Tests', () => {
       const component1 = {
         id: 'comp1',
         component: comp1,
+        props: {},
         isActive: false
       };
       
       const component2 = {
         id: 'comp2',
         component: comp2,
+        props: {},
         isActive: false
       };
       
       region.addComponent(component1);
       region.addComponent(component2);
       
-      expect(region.components).toHaveLength(2);
-      expect(region.components.map(c => c.id)).toContain('comp1');
-      expect(region.components.map(c => c.id)).toContain('comp2');
+      expect(region.getComponents()).toHaveLength(2);
+      expect(region.getComponents().map(c => c.id)).toContain('comp1');
+      expect(region.getComponents().map(c => c.id)).toContain('comp2');
       
       region.removeComponent('comp1');
-      expect(region.components).toHaveLength(1);
-      expect(region.components.map(c => c.id)).toContain('comp2');
-      expect(region.components.map(c => c.id)).not.toContain('comp1');
+      expect(region.getComponents()).toHaveLength(1);
+      expect(region.getComponents().map(c => c.id)).toContain('comp2');
+      expect(region.getComponents().map(c => c.id)).not.toContain('comp1');
     });
 
     it('should handle component activation in single component regions', () => {
@@ -303,12 +305,14 @@ describe('Core Framework Coverage Tests', () => {
       const component1 = {
         id: 'comp1',
         component: comp1,
+        props: {},
         isActive: false
       };
       
       const component2 = {
         id: 'comp2',
         component: comp2,
+        props: {},
         isActive: false
       };
       
@@ -334,6 +338,7 @@ describe('Core Framework Coverage Tests', () => {
       const component = {
         id: 'comp1',
         component: () => 'Test Component',
+        props: {},
         isActive: false
       };
       region.addComponent(component);

@@ -4,7 +4,7 @@ import React from 'react';
  * Component configuration for regions
  */
 export interface ComponentConfig {
-  component: React.ComponentType<any>;
+  component: React.ComponentType<Record<string, unknown>>;
   id: string;
   props: Record<string, unknown>;
   isActive: boolean;
@@ -155,6 +155,29 @@ export class MultiComponentRegion extends BaseRegion {
  */
 export class RegionManager {
   private regions = new Map<string, IRegion>();
+  private changeListeners = new Set<() => void>();
+
+  /**
+   * Add a listener for region changes
+   */
+  addChangeListener(listener: () => void): () => void {
+    this.changeListeners.add(listener);
+    return () => this.changeListeners.delete(listener);
+  }
+
+  /**
+   * Notify all change listeners
+   */
+  private notifyChange(): void {
+    this.changeListeners.forEach(listener => {
+      try {
+        listener();
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('Error in region change listener:', error);
+      }
+    });
+  }
 
   /**
    * Register a region
@@ -164,6 +187,7 @@ export class RegionManager {
       throw new Error(`Region '${region.name}' is already registered`);
     }
     this.regions.set(region.name, region);
+    this.notifyChange();
   }
 
   /**
@@ -171,6 +195,7 @@ export class RegionManager {
    */
   unregisterRegion(name: string): void {
     this.regions.delete(name);
+    this.notifyChange();
   }
 
   /**
@@ -200,5 +225,6 @@ export class RegionManager {
   clearAll(): void {
     this.regions.forEach(region => region.clear());
     this.regions.clear();
+    this.notifyChange();
   }
 }

@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { renderHook } from '@testing-library/react';
-import type { ReactNode } from 'react';
+import React from 'react';
 import { useContainer, useEventAggregator, useRegionManager, useRegion } from '../../../src/lib/react/hooks';
 import { PrismicFrameworkProvider } from '../../../src/lib/react/RegionComponents';
 import { Container } from '../../../src/lib/core/container';
@@ -11,7 +11,8 @@ describe('React Hooks', () => {
   let container: Container;
   let eventAggregator: EventAggregator;
   let regionManager: RegionManager;
-  let wrapper: ({ children }: { children: ReactNode }) => React.JSX.Element;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let wrapper: any;
 
   beforeEach(() => {
     container = new Container();
@@ -19,7 +20,7 @@ describe('React Hooks', () => {
     regionManager = new RegionManager();
 
     // Create a wrapper component with providers
-    wrapper = ({ children }: { children: ReactNode }) => (
+    wrapper = ({ children }: { children: React.ReactNode }) => (
       <PrismicFrameworkProvider
         container={container}
         eventAggregator={eventAggregator}
@@ -39,7 +40,7 @@ describe('React Hooks', () => {
     it('should throw error when used outside provider', () => {
       expect(() => {
         renderHook(() => useContainer());
-      }).toThrow('useContainer must be used within a ContainerProvider');
+      }).toThrow('useContainer must be used within a PrismicFrameworkProvider');
     });
   });
 
@@ -52,7 +53,7 @@ describe('React Hooks', () => {
     it('should throw error when used outside provider', () => {
       expect(() => {
         renderHook(() => useEventAggregator());
-      }).toThrow('useEventAggregator must be used within an EventAggregatorProvider');
+      }).toThrow('useEventAggregator must be used within a PrismicFrameworkProvider');
     });
   });
 
@@ -65,7 +66,7 @@ describe('React Hooks', () => {
     it('should throw error when used outside provider', () => {
       expect(() => {
         renderHook(() => useRegionManager());
-      }).toThrow('useRegionManager must be used within a RegionProvider');
+      }).toThrow('useRegionManager must be used within a PrismicFrameworkProvider');
     });
   });
 

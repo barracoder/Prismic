@@ -344,8 +344,8 @@ describe('Prismic React Framework', () => {
       // Add component
       region.addComponent(mockComponent);
       
-      expect(region.components).toHaveLength(1);
-      expect(region.components[0]).toBe(mockComponent);
+      expect(region.getComponents()).toHaveLength(1);
+      expect(region.getComponents()[0]).toBe(mockComponent);
       expect(region.activeComponent).toBe(mockComponent); // Auto-activated
       expect(mockComponent.isActive).toBe(true);
     });
@@ -419,10 +419,10 @@ describe('Prismic React Framework', () => {
       };
       
       region.addComponent(component);
-      expect(region.components).toHaveLength(1);
+      expect(region.getComponents()).toHaveLength(1);
       
       region.removeComponent('removable');
-      expect(region.components).toHaveLength(0);
+      expect(region.getComponents()).toHaveLength(0);
       expect(region.activeComponent).toBeNull();
     });
 

@@ -113,7 +113,7 @@ test.describe('Prismic React Framework Demo', () => {
     
     // Check that demo sections are visible
     const demoSections = page.locator('.demo-section');
-    await expect(demoSections).toHaveCount(3); // Welcome, Content, Features
+    await expect(demoSections).toHaveCount(4); // Welcome, Content, Features, Event Aggregator
     
     // Check that region containers are present
     await expect(page.locator('.region-container')).toHaveCount(2);
@@ -137,7 +137,7 @@ test.describe('Prismic React Framework Demo', () => {
   test('should be responsive and accessible', async ({ page }) => {
     // Check that page is accessible - use specific selectors
     await expect(page.locator('.app-header h1')).toBeVisible();
-    await expect(page.locator('h2')).toHaveCount(3);
+    await expect(page.locator('h2')).toHaveCount(4); // Welcome, Content, Features, Event Aggregator
     await expect(page.locator('h3')).toHaveCount(1);
     
     // Check that buttons are accessible
