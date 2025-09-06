@@ -32,7 +32,7 @@ jobs:
     - name: Install dependencies
       run: |
         cd prismic-react
-        npm ci
+        npm ci || (rm -rf node_modules package-lock.json && npm install)
     
     - name: Run linting
       run: |
@@ -83,7 +83,7 @@ jobs:
     - name: Install dependencies
       run: |
         cd prismic-react
-        npm ci
+        npm ci || (rm -rf node_modules package-lock.json && npm install)
     
     - name: Install Playwright browsers
       run: |
@@ -126,7 +126,7 @@ jobs:
     - name: Install dependencies
       run: |
         cd prismic-react
-        npm ci
+        npm ci || (rm -rf node_modules package-lock.json && npm install)
     
     - name: Build library
       run: |
@@ -165,7 +165,7 @@ jobs:
     - name: Install dependencies
       run: |
         cd prismic-react
-        npm ci
+        npm ci || (rm -rf node_modules package-lock.json && npm install)
     
     - name: Build library
       run: |
