@@ -13,7 +13,7 @@ test.describe('Prismic React Framework Demo', () => {
     await expect(page.locator('.app-header h1')).toContainText('Prismic React Demo');
     
     // Check for subtitle
-    await expect(page.locator('.app-header p')).toContainText('A demonstration of the React adaptation of Web Prism framework');
+    await expect(page.locator('.app-header p')).toContainText('A demonstration of the React adaptation of Prismic React framework');
   });
 
   test('should display framework features list', async ({ page }) => {
