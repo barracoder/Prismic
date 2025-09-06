@@ -7,7 +7,7 @@ on:
     branches: [ main, develop ]
 
 env:
-  NODE_VERSION: 20
+  NODE_VERSION: 18
 
 jobs:
   test:
@@ -16,7 +16,7 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [20, 22]
+        node-version: [18, 20, 22]
     
     steps:
     - name: Checkout repository
@@ -53,11 +53,11 @@ jobs:
       run: |
         cd prismic-react
         npm run test:coverage
-      if: matrix.node-version == 20
+      if: matrix.node-version == 18
     
     - name: Upload coverage reports
       uses: codecov/codecov-action@v4
-      if: matrix.node-version == 20
+      if: matrix.node-version == 18
       with:
         file: ./prismic-react/packages/prismic-react/coverage/coverage-final.json
         flags: unittests
@@ -181,13 +181,7 @@ jobs:
     - name: Test package installation
       run: |
         cd prismic-react/packages/prismic-react
-        npm pack --quiet
+        npm pack
         cd ../demo-website
-        # Remove any existing tarball and copy the new one
-        rm -f prismic-react-*.tgz
-        cp ../prismic-react/prismic-react-*.tgz .
-        # Install from local file and build
-        npm install ./prismic-react-*.tgz
+        npm install ../prismic-react/prismic-react-*.tgz
         npm run build
-        # Clean up
-        rm -f prismic-react-*.tgz
