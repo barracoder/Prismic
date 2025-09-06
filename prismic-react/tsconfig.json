@@ -1,0 +1,7 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/prismic-react" },
+    { "path": "./packages/demo-website" }
+  ]
+}
