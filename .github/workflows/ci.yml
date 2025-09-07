@@ -51,7 +51,7 @@ jobs:
     
     - name: Run unit tests
       run: |
-        npm run test --workspaces
+        npm run test --workspaces --if-present
     
     - name: Run unit tests with coverage
       run: |
