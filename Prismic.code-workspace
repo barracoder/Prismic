@@ -1,0 +1,23 @@
+{
+  "folders": [
+    {
+      "name": "Web Prism (src)",
+      "path": "./src"
+    },
+    {
+      "name": "Prismic React",
+      "path": "./prismic-react"
+    },
+    {
+      "name": "Root",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "jest.jestCommandLine": "jest",
+    "jest.rootPath": "src",
+    "jest.runMode": {
+      "type": "on-demand"
+    }
+  }
+}

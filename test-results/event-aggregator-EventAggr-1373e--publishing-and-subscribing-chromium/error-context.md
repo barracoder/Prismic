@@ -1,0 +1,121 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - heading "Prismic React Demo" [level=1] [ref=e5]
+    - paragraph [ref=e6]: A demonstration of the React adaptation of Prismic React framework
+  - main [ref=e7]:
+    - generic [ref=e8]:
+      - heading "Welcome Region" [level=2] [ref=e9]
+      - paragraph [ref=e10]: "This region will contain a welcome component rendered via React Portal:"
+      - generic [ref=e12]:
+        - heading "Prismic React Framework" [level=1] [ref=e13]
+        - paragraph [ref=e14]: Demonstrating region-based component composition
+        - paragraph [ref=e15]: This component was rendered in the 'welcome' region using React Portals
+    - generic [ref=e16]:
+      - heading "Content Region" [level=2] [ref=e17]
+      - paragraph [ref=e18]: "This region contains an interactive counter component:"
+      - generic [ref=e20]:
+        - heading "Interactive Counter" [level=3] [ref=e21]
+        - generic [ref=e22]: "5"
+        - generic [ref=e23]:
+          - button "-" [ref=e24] [cursor=pointer]
+          - button "+" [ref=e25] [cursor=pointer]
+        - paragraph [ref=e26]: This component demonstrates stateful React components in regions
+    - generic [ref=e27]:
+      - heading "Framework Features" [level=2] [ref=e28]
+      - list [ref=e29]:
+        - listitem [ref=e30]: ✅ Dependency Injection Container
+        - listitem [ref=e31]: ✅ Event Aggregator for component communication
+        - listitem [ref=e32]: ✅ Region-based UI composition using React Portals
+        - listitem [ref=e33]: ✅ React Hooks for framework integration
+        - listitem [ref=e34]: ✅ TypeScript support with strict type checking
+        - listitem [ref=e35]: ✅ Dynamic Module Loading System
+        - listitem [ref=e36]: ✅ Command Pattern Implementation
+        - listitem [ref=e37]: ✅ Context-Sensitive UI Contributions
+        - listitem [ref=e38]: ✅ Module Lifecycle Management
+      - generic [ref=e39]:
+        - heading "🔗 Framework Hooks Status" [level=4] [ref=e40]
+        - list [ref=e41]:
+          - listitem [ref=e42]: "✅ Container: Available"
+          - listitem [ref=e43]: "✅ Event Aggregator: Available"
+          - listitem [ref=e44]: "✅ Region Manager: Available (2 regions)"
+        - paragraph [ref=e45]: All framework services are now accessible via hooks!
+    - generic [ref=e46]:
+      - heading "Module Loading System" [level=2] [ref=e47]
+      - paragraph [ref=e48]: "This demonstrates the dynamic module loading system inspired by WPF Prism:"
+      - generic [ref=e49]:
+        - heading "Module System Dashboard" [level=3] [ref=e50]
+        - paragraph [ref=e51]: This demonstrates the modular architecture. Each module can be loaded dynamically and contribute UI, commands, and functionality.
+        - generic [ref=e52]:
+          - generic [ref=e53]:
+            - heading "Available Modules" [level=4] [ref=e54]
+            - generic [ref=e55]:
+              - generic [ref=e56] [cursor=pointer]:
+                - generic [ref=e57] [cursor=pointer]:
+                  - generic [ref=e58] [cursor=pointer]: ✅
+                  - generic [ref=e59] [cursor=pointer]: UploadLogsModule
+                  - generic [ref=e60] [cursor=pointer]: Loaded
+                - paragraph [ref=e61] [cursor=pointer]: Dashboard module for managing upload logs and tracking file operations
+              - generic [ref=e62] [cursor=pointer]:
+                - generic [ref=e63] [cursor=pointer]:
+                  - generic [ref=e64] [cursor=pointer]: 📦
+                  - generic [ref=e65] [cursor=pointer]: AnalyticsModule
+                  - generic [ref=e66] [cursor=pointer]: Available
+                - paragraph [ref=e67] [cursor=pointer]: Advanced analytics and reporting capabilities for upload metrics
+              - generic [ref=e68] [cursor=pointer]:
+                - generic [ref=e69] [cursor=pointer]:
+                  - generic [ref=e70] [cursor=pointer]: ✅
+                  - generic [ref=e71] [cursor=pointer]: NotificationsModule
+                  - generic [ref=e72] [cursor=pointer]: Loaded
+                - paragraph [ref=e73] [cursor=pointer]: Real-time notification system for upload events and alerts
+              - generic [ref=e74] [cursor=pointer]:
+                - generic [ref=e75] [cursor=pointer]:
+                  - generic [ref=e76] [cursor=pointer]: 📦
+                  - generic [ref=e77] [cursor=pointer]: UserManagementModule
+                  - generic [ref=e78] [cursor=pointer]: Available
+                - paragraph [ref=e79] [cursor=pointer]: User management and permissions system
+          - generic [ref=e80]:
+            - heading "Module Details" [level=4] [ref=e81]
+            - generic [ref=e82]: Select a module to view details
+        - generic [ref=e83]:
+          - heading "Module System Features:" [level=5] [ref=e84]
+          - generic [ref=e85]:
+            - generic [ref=e86]: ✅ Dynamic loading
+            - generic [ref=e87]: ✅ Dependency resolution
+            - generic [ref=e88]: ✅ UI contributions
+            - generic [ref=e89]: ✅ Command registration
+            - generic [ref=e90]: ✅ Context-sensitive behavior
+            - generic [ref=e91]: ✅ Lifecycle management
+    - generic [ref=e92]:
+      - heading "Event Aggregator Demo" [level=2] [ref=e93]
+      - paragraph [ref=e94]: "This demonstrates how components can communicate using the EventAggregator pattern:"
+      - generic [ref=e95]:
+        - heading "📤 Event Publisher" [level=4] [ref=e96]
+        - paragraph [ref=e97]: This component publishes events that other components can listen to.
+        - generic [ref=e98]:
+          - button "Simple Click" [active] [ref=e99] [cursor=pointer]
+          - button "Save Action" [ref=e100] [cursor=pointer]
+          - button "Special Process" [ref=e101] [cursor=pointer]
+        - paragraph [ref=e102]:
+          - strong [ref=e103]: "Last Action:"
+          - text: CLICK
+      - generic [ref=e104]:
+        - heading "📥 Event Subscriber" [level=4] [ref=e105]
+        - paragraph [ref=e106]: This component listens to events and displays them in real-time.
+        - generic [ref=e107]:
+          - generic [ref=e108]:
+            - strong [ref=e109]: "Events Received:"
+            - text: "User Actions: 1, Notifications: 0"
+          - button "Clear Log" [ref=e110] [cursor=pointer]
+        - generic [ref=e112]:
+          - generic [ref=e113]:
+            - generic [ref=e114]: User Action
+            - generic [ref=e115]: 11:03:05 AM
+          - generic [ref=e116]: "Action: CLICK"
+          - generic [ref=e117]: "{ \"buttonId\": \"btn-click\", \"component\": \"EventPublisherComponent\" }"
+      - paragraph [ref=e118]: Click the buttons above to see real-time event communication between components! The publisher sends events and the subscriber receives and displays them.
+  - contentinfo [ref=e119]:
+    - paragraph [ref=e120]: This demo shows how the Prismic React framework enables modular, composable UI architecture using React best practices.
+```

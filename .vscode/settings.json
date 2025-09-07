@@ -1,0 +1,12 @@
+{
+  "jest.jestCommandLine": "npx jest",
+  "jest.rootPath": "src",
+  "jest.runMode": {
+    "type": "on-demand"
+  },
+  "jest.outputConfig": {
+    "revealOutput": "on-run",
+    "revealWithFocus": "test-results"
+  },
+  "testing.automaticallyOpenPeekView": "never"
+}
