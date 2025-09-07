@@ -24,38 +24,35 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
-        cache-dependency-path: 'prismic-react/package-lock.json'
+        cache-dependency-path: 'package-lock.json'
         registry-url: 'https://registry.npmjs.org'
     
     - name: Install dependencies
-      run: |
-        cd prismic-react
-        npm ci
+      run: npm ci
     
     - name: Run all tests
       run: |
-        cd prismic-react
         npm run lint
-        npm run test
-        npm run typecheck -w packages/prismic-react
+        npm test
+        npm run typecheck
     
-    - name: Build library
+    - name: Build packages
       run: |
-        cd prismic-react
-        npm run build -w packages/prismic-react
+        npm run build:prismic
+        npm run build:prismic-react
     
     - name: Extract version from tag
       id: version
       run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
     
-    - name: Update package version
+    - name: Update package versions
       run: |
-        cd prismic-react/packages/prismic-react
+        cd packages/prismic-react
         npm version ${{ steps.version.outputs.VERSION }} --no-git-tag-version
     
     - name: Publish to NPM
       run: |
-        cd prismic-react/packages/prismic-react
+        cd packages/prismic-react
         npm publish --access public
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

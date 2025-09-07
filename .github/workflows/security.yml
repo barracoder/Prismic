@@ -26,22 +26,26 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
-        cache-dependency-path: 'prismic-react/package-lock.json'
+        cache-dependency-path: 'package-lock.json'
     
     - name: Install dependencies
-      run: |
-        cd prismic-react
-        npm ci
+      run: npm ci
     
-    - name: Run security audit
+    - name: Run security audit - Root
+      run: npm audit --audit-level=moderate
+    
+    - name: Run security audit - Prismic
       run: |
-        cd prismic-react
+        cd packages/prismic
+        npm audit --audit-level=moderate
+    
+    - name: Run security audit - Prismic React
+      run: |
+        cd packages/prismic-react
         npm audit --audit-level=moderate
     
     - name: Check for known vulnerabilities
-      run: |
-        cd prismic-react
-        npx audit-ci --moderate
+      run: npx audit-ci --moderate
       continue-on-error: true
 
   dependency-review:
@@ -86,17 +90,15 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}
         cache: 'npm'
-        cache-dependency-path: 'prismic-react/package-lock.json'
+        cache-dependency-path: 'package-lock.json'
     
     - name: Install dependencies
-      run: |
-        cd prismic-react
-        npm ci
+      run: npm ci
     
-    - name: Build for analysis
+    - name: Build packages for analysis
       run: |
-        cd prismic-react
-        npm run build
+        npm run build:prismic
+        npm run build:prismic-react
     
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
