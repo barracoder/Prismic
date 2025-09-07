@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { Container } from '../core/container';
 
 interface TestService {
@@ -22,7 +23,7 @@ describe('Container', () => {
   describe('Transient Services', () => {
     it('should register and resolve transient services', () => {
       // Arrange
-      const factory = jest.fn((): TestService => ({ id: Math.random() }));
+      const factory = vi.fn((): TestService => ({ id: Math.random() }));
       
       // Act
       container.registerTransient('testService', factory);
@@ -57,7 +58,7 @@ describe('Container', () => {
   describe('Singleton Services', () => {
     it('should register and resolve singleton services', () => {
       // Arrange
-      const factory = jest.fn((): TestService => ({ id: Math.random() }));
+      const factory = vi.fn((): TestService => ({ id: Math.random() }));
       
       // Act
       container.registerSingleton('testService', factory);
@@ -91,7 +92,7 @@ describe('Container', () => {
   describe('Scoped Services', () => {
     it('should register and resolve scoped services', () => {
       // Arrange
-      const factory = jest.fn((): TestService => ({ id: Math.random() }));
+      const factory = vi.fn((): TestService => ({ id: Math.random() }));
       
       // Act
       container.registerScoped('testService', factory);
@@ -105,7 +106,7 @@ describe('Container', () => {
 
     it('should create new instances after clearing scope', () => {
       // Arrange
-      const factory = jest.fn((): TestService => ({ id: Math.random() }));
+      const factory = vi.fn((): TestService => ({ id: Math.random() }));
       container.registerScoped('testService', factory);
       
       // Act

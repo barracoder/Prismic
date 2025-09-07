@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { 
   BaseViewModel, 
   DelegateCommand, 
@@ -45,7 +46,7 @@ describe('BaseViewModel', () => {
   describe('Property Change Notification', () => {
     it('should notify when property changes', () => {
       // Arrange
-      const handler = jest.fn();
+      const handler = vi.fn();
       viewModel.propertyChanged.subscribe(PropertyChangedEvent.TYPE, handler);
 
       // Act
@@ -62,7 +63,7 @@ describe('BaseViewModel', () => {
 
     it('should provide correct old value on subsequent changes', () => {
       // Arrange
-      const handler = jest.fn();
+      const handler = vi.fn();
       viewModel.name = 'Alice'; // Set initial value
       viewModel.propertyChanged.subscribe(PropertyChangedEvent.TYPE, handler);
 
@@ -80,7 +81,7 @@ describe('BaseViewModel', () => {
 
     it('should not notify when property value does not change', () => {
       // Arrange
-      const handler = jest.fn();
+      const handler = vi.fn();
       viewModel.propertyChanged.subscribe(PropertyChangedEvent.TYPE, handler);
       viewModel.name = 'John';
       handler.mockClear();
@@ -94,7 +95,7 @@ describe('BaseViewModel', () => {
 
     it('should support multiple property changes', () => {
       // Arrange
-      const handler = jest.fn();
+      const handler = vi.fn();
       viewModel.propertyChanged.subscribe(PropertyChangedEvent.TYPE, handler);
 
       // Act
@@ -139,7 +140,7 @@ describe('BaseViewModel', () => {
   describe('Disposal', () => {
     it('should clear property changed subscriptions on dispose', () => {
       // Arrange
-      const handler = jest.fn();
+      const handler = vi.fn();
       viewModel.propertyChanged.subscribe(PropertyChangedEvent.TYPE, handler);
 
       // Act
@@ -156,7 +157,7 @@ describe('DelegateCommand', () => {
   describe('Basic Command Execution', () => {
     it('should execute command when canExecute is true', async () => {
       // Arrange
-      const executeAction = jest.fn();
+      const executeAction = vi.fn();
       const command = new DelegateCommand(executeAction);
 
       // Act
@@ -168,7 +169,7 @@ describe('DelegateCommand', () => {
 
     it('should not execute when canExecute is false', async () => {
       // Arrange
-      const executeAction = jest.fn();
+      const executeAction = vi.fn();
       const command = new DelegateCommand(executeAction);
       command.setCanExecute(false);
 
@@ -181,8 +182,8 @@ describe('DelegateCommand', () => {
 
     it('should use canExecute function when provided', () => {
       // Arrange
-      const executeAction = jest.fn();
-      const canExecuteFunc = jest.fn(() => false);
+      const executeAction = vi.fn();
+      const canExecuteFunc = vi.fn(() => false);
       const command = new DelegateCommand(executeAction, canExecuteFunc);
 
       // Act
@@ -197,7 +198,7 @@ describe('DelegateCommand', () => {
   describe('CanExecute Management', () => {
     it('should allow manual canExecute state changes', () => {
       // Arrange
-      const executeAction = jest.fn();
+      const executeAction = vi.fn();
       const command = new DelegateCommand(executeAction);
 
       // Act
@@ -209,8 +210,8 @@ describe('DelegateCommand', () => {
 
     it('should throw error when trying to manually set canExecute with function', () => {
       // Arrange
-      const executeAction = jest.fn();
-      const canExecuteFunc = jest.fn(() => true);
+      const executeAction = vi.fn();
+      const canExecuteFunc = vi.fn(() => true);
       const command = new DelegateCommand(executeAction, canExecuteFunc);
 
       // Act & Assert
@@ -221,9 +222,9 @@ describe('DelegateCommand', () => {
 
     it('should raise canExecute changed event', () => {
       // Arrange
-      const executeAction = jest.fn();
+      const executeAction = vi.fn();
       const command = new DelegateCommand(executeAction);
-      const handler = jest.fn();
+      const handler = vi.fn();
       command.canExecuteChanged.subscribe(CommandCanExecuteChangedEvent.TYPE, handler);
 
       // Act
@@ -241,7 +242,7 @@ describe('AsyncCommand', () => {
   describe('Async Command Execution', () => {
     it('should execute async command', async () => {
       // Arrange
-      const executeAction = jest.fn(async () => {
+      const executeAction = vi.fn(async () => {
         await new Promise(resolve => setTimeout(resolve, 10));
       });
       const command = new AsyncCommand(executeAction);
@@ -256,7 +257,7 @@ describe('AsyncCommand', () => {
     it('should prevent execution while command is executing', async () => {
       // Arrange
       let resolveExecution: () => void;
-      const executeAction = jest.fn(async () => {
+      const executeAction = vi.fn(async () => {
         await new Promise<void>(resolve => {
           resolveExecution = resolve;
         });
@@ -283,7 +284,7 @@ describe('AsyncCommand', () => {
 
     it('should restore canExecute state after execution completes', async () => {
       // Arrange
-      const executeAction = jest.fn(async () => {
+      const executeAction = vi.fn(async () => {
         await new Promise(resolve => setTimeout(resolve, 10));
       });
       const command = new AsyncCommand(executeAction);
@@ -302,7 +303,7 @@ describe('AsyncCommand', () => {
 
     it('should restore canExecute state even if execution throws', async () => {
       // Arrange
-      const executeAction = jest.fn(async () => {
+      const executeAction = vi.fn(async () => {
         throw new Error('Execution failed');
       });
       const command = new AsyncCommand(executeAction);
@@ -321,11 +322,11 @@ describe('AsyncCommand', () => {
 
     it('should raise canExecute changed events during execution', async () => {
       // Arrange
-      const executeAction = jest.fn(async () => {
+      const executeAction = vi.fn(async () => {
         await new Promise(resolve => setTimeout(resolve, 10));
       });
       const command = new AsyncCommand(executeAction);
-      const handler = jest.fn();
+      const handler = vi.fn();
       command.canExecuteChanged.subscribe(CommandCanExecuteChangedEvent.TYPE, handler);
 
       // Act
@@ -339,8 +340,8 @@ describe('AsyncCommand', () => {
   describe('CanExecute with Function', () => {
     it('should respect canExecute function even when not executing', () => {
       // Arrange
-      const executeAction = jest.fn(async () => {});
-      const canExecuteFunc = jest.fn(() => false);
+      const executeAction = vi.fn(async () => {});
+      const canExecuteFunc = vi.fn(() => false);
       const command = new AsyncCommand(executeAction, canExecuteFunc);
 
       // Act & Assert
@@ -351,12 +352,12 @@ describe('AsyncCommand', () => {
     it('should return false when executing regardless of canExecute function', async () => {
       // Arrange
       let resolveExecution: () => void;
-      const executeAction = jest.fn(async () => {
+      const executeAction = vi.fn(async () => {
         await new Promise<void>(resolve => {
           resolveExecution = resolve;
         });
       });
-      const canExecuteFunc = jest.fn(() => true);
+      const canExecuteFunc = vi.fn(() => true);
       const command = new AsyncCommand(executeAction, canExecuteFunc);
 
       // Act

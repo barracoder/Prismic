@@ -1,0 +1,2 @@
+# Ignore everything - This workspace uses Vitest instead of Jest
+**/*

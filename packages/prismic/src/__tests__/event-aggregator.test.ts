@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { EventAggregator, BaseEvent } from '../core/event-aggregator';
 
 class TestEvent extends BaseEvent {
@@ -30,7 +31,7 @@ describe('EventAggregator', () => {
   describe('Subscribe and Publish', () => {
     it('should subscribe to events and receive notifications', async () => {
       // Arrange
-      const handler = jest.fn();
+      const handler = vi.fn();
       eventAggregator.subscribe(TestEvent.TYPE, handler);
       const event = new TestEvent('test data');
 
@@ -44,8 +45,8 @@ describe('EventAggregator', () => {
 
     it('should handle multiple subscribers for the same event', async () => {
       // Arrange
-      const handler1 = jest.fn();
-      const handler2 = jest.fn();
+      const handler1 = vi.fn();
+      const handler2 = vi.fn();
       eventAggregator.subscribe(TestEvent.TYPE, handler1);
       eventAggregator.subscribe(TestEvent.TYPE, handler2);
       const event = new TestEvent('test data');
@@ -60,7 +61,7 @@ describe('EventAggregator', () => {
 
     it('should not notify unsubscribed handlers', async () => {
       // Arrange
-      const handler = jest.fn();
+      const handler = vi.fn();
       const subscription = eventAggregator.subscribe(TestEvent.TYPE, handler);
       subscription.unsubscribe();
       const event = new TestEvent('test data');
@@ -74,7 +75,7 @@ describe('EventAggregator', () => {
 
     it('should handle async event handlers', async () => {
       // Arrange
-      const asyncHandler = jest.fn(async () => {
+      const asyncHandler = vi.fn(async () => {
         await new Promise(resolve => setTimeout(resolve, 10));
       });
       eventAggregator.subscribe(TestEvent.TYPE, asyncHandler);
@@ -89,11 +90,11 @@ describe('EventAggregator', () => {
 
     it('should handle errors in event handlers gracefully', async () => {
       // Arrange
-      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
-      const errorHandler = jest.fn(() => {
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const errorHandler = vi.fn(() => {
         throw new Error('Handler error');
       });
-      const normalHandler = jest.fn();
+      const normalHandler = vi.fn();
       
       eventAggregator.subscribe(TestEvent.TYPE, errorHandler);
       eventAggregator.subscribe(TestEvent.TYPE, normalHandler);
@@ -117,7 +118,7 @@ describe('EventAggregator', () => {
   describe('Synchronous Publishing', () => {
     it('should publish events synchronously', () => {
       // Arrange
-      const handler = jest.fn();
+      const handler = vi.fn();
       eventAggregator.subscribe(TestEvent.TYPE, handler);
       const event = new TestEvent('test data');
 
@@ -130,11 +131,11 @@ describe('EventAggregator', () => {
 
     it('should handle errors in sync handlers gracefully', () => {
       // Arrange
-      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
-      const errorHandler = jest.fn(() => {
+      const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const errorHandler = vi.fn(() => {
         throw new Error('Sync handler error');
       });
-      const normalHandler = jest.fn();
+      const normalHandler = vi.fn();
       
       eventAggregator.subscribe(TestEvent.TYPE, errorHandler);
       eventAggregator.subscribe(TestEvent.TYPE, normalHandler);
@@ -158,7 +159,7 @@ describe('EventAggregator', () => {
   describe('Subscription Management', () => {
     it('should return subscription object with unsubscribe method', () => {
       // Arrange
-      const handler = jest.fn();
+      const handler = vi.fn();
 
       // Act
       const subscription = eventAggregator.subscribe(TestEvent.TYPE, handler);
@@ -170,8 +171,8 @@ describe('EventAggregator', () => {
 
     it('should clean up event type when all handlers are unsubscribed', () => {
       // Arrange
-      const handler1 = jest.fn();
-      const handler2 = jest.fn();
+      const handler1 = vi.fn();
+      const handler2 = vi.fn();
       const subscription1 = eventAggregator.subscribe(TestEvent.TYPE, handler1);
       const subscription2 = eventAggregator.subscribe(TestEvent.TYPE, handler2);
 
@@ -189,7 +190,7 @@ describe('EventAggregator', () => {
   describe('Subscriber Queries', () => {
     it('should check if event type has subscribers', () => {
       // Arrange
-      const handler = jest.fn();
+      const handler = vi.fn();
 
       // Act & Assert
       expect(eventAggregator.hasSubscribers(TestEvent.TYPE)).toBe(false);
@@ -200,8 +201,8 @@ describe('EventAggregator', () => {
 
     it('should return correct subscriber count', () => {
       // Arrange
-      const handler1 = jest.fn();
-      const handler2 = jest.fn();
+      const handler1 = vi.fn();
+      const handler2 = vi.fn();
 
       // Act & Assert
       expect(eventAggregator.getSubscriberCount(TestEvent.TYPE)).toBe(0);
@@ -217,8 +218,8 @@ describe('EventAggregator', () => {
   describe('Event Type Isolation', () => {
     it('should only notify handlers for specific event types', async () => {
       // Arrange
-      const testHandler = jest.fn();
-      const anotherHandler = jest.fn();
+      const testHandler = vi.fn();
+      const anotherHandler = vi.fn();
       
       eventAggregator.subscribe(TestEvent.TYPE, testHandler);
       eventAggregator.subscribe(AnotherEvent.TYPE, anotherHandler);
@@ -241,8 +242,8 @@ describe('EventAggregator', () => {
   describe('Cleanup', () => {
     it('should clear all subscriptions', () => {
       // Arrange
-      const handler1 = jest.fn();
-      const handler2 = jest.fn();
+      const handler1 = vi.fn();
+      const handler2 = vi.fn();
       
       eventAggregator.subscribe(TestEvent.TYPE, handler1);
       eventAggregator.subscribe(AnotherEvent.TYPE, handler2);
@@ -257,8 +258,8 @@ describe('EventAggregator', () => {
 
     it('should clear subscriptions for specific event type', () => {
       // Arrange
-      const handler1 = jest.fn();
-      const handler2 = jest.fn();
+      const handler1 = vi.fn();
+      const handler2 = vi.fn();
       
       eventAggregator.subscribe(TestEvent.TYPE, handler1);
       eventAggregator.subscribe(AnotherEvent.TYPE, handler2);

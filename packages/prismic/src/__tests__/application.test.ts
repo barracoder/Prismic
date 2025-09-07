@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { 
   Application, 
   ApplicationBuilder,
@@ -69,7 +70,7 @@ describe('Application', () => {
     it('should initialize application', async () => {
       // Arrange
       app = new Application();
-      const eventHandler = jest.fn();
+      const eventHandler = vi.fn();
       app.eventAggregator.subscribe(ApplicationStartingEvent.TYPE, eventHandler);
 
       // Act
@@ -97,7 +98,7 @@ describe('Application', () => {
     it('should start application', async () => {
       // Arrange
       app = new Application();
-      const startedHandler = jest.fn();
+      const startedHandler = vi.fn();
       app.eventAggregator.subscribe(ApplicationStartedEvent.TYPE, startedHandler);
 
       // Act
@@ -168,7 +169,7 @@ describe('Application', () => {
       app = new Application();
       await app.start();
       
-      const shutdownHandler = jest.fn();
+      const shutdownHandler = vi.fn();
       app.eventAggregator.subscribe(ApplicationShuttingDownEvent.TYPE, shutdownHandler);
 
       // Act

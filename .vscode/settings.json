@@ -1,12 +1,36 @@
 {
-  "jest.jestCommandLine": "npx jest",
-  "jest.rootPath": "src",
-  "jest.runMode": {
-    "type": "on-demand"
+  // Completely disable Jest extension
+  "jest.enable": false,
+  "jest.disabledWorkspaceFolders": ["packages/prismic", "packages/prismic-react", ".", "demo-website"],
+  "jest.runMode": "deferred",
+  
+  // Vitest Configuration - Standardized across all packages
+  "vitest.enable": true,
+  "vitest.commandLine": "npm test",
+  
+  // General Testing Settings
+  "testing.openTesting": "neverOpen",
+  "testing.defaultGutterClickAction": "run",
+  "testing.gutterEnabled": true,
+  "testing.automaticallyOpenTestResults": "neverOpen",
+  
+  // File Associations
+  "files.associations": {
+    "*.test.ts": "typescript",
+    "*.spec.ts": "typescript",
+    "*.test.tsx": "typescriptreact",
+    "*.spec.tsx": "typescriptreact"
   },
-  "jest.outputConfig": {
-    "revealOutput": "on-run",
-    "revealWithFocus": "test-results"
-  },
-  "testing.automaticallyOpenPeekView": "never"
+  
+  // TypeScript Settings
+  "typescript.preferences.includePackageJsonAutoImports": "auto",
+  
+  // Search Settings
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/coverage": true,
+    "**/dist": true,
+    "**/playwright-report": true,
+    "**/test-results": true
+  }
 }

@@ -1,3 +1,4 @@
+import { vi } from 'vitest';
 import { 
   ModuleManager, 
   BaseModule, 
@@ -179,7 +180,7 @@ describe('ModuleManager', () => {
       moduleManager.registerModule(module);
       
       // Mock the initialize method to be slow
-      module.initialize = jest.fn(async () => {
+      module.initialize = vi.fn(async () => {
         await new Promise(resolve => setTimeout(resolve, 100));
       });
 
@@ -269,10 +270,10 @@ describe('ModuleManager', () => {
       const highPriorityModule = new HighPriorityModule();
 
       const initOrder: string[] = [];
-      lowPriorityModule.initialize = jest.fn(async () => {
+      lowPriorityModule.initialize = vi.fn(async () => {
         initOrder.push('LowPriority');
       });
-      highPriorityModule.initialize = jest.fn(async () => {
+      highPriorityModule.initialize = vi.fn(async () => {
         initOrder.push('HighPriority');
       });
 
