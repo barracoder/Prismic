@@ -4,22 +4,23 @@
   "description": "Prismic framework workspace with core and React packages",
   "private": true,
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "demo-website"
   ],
   "scripts": {
-    "build": "npm run build --workspaces",
+    "build": "npm run build --workspaces --if-present",
     "build:prismic": "npm run build --workspace=packages/prismic",
     "build:prismic-react": "npm run build --workspace=packages/prismic-react",
-    "test": "npm run test --workspaces",
+    "build:demo": "npm run build --workspace=demo-website",
+    "test": "npm run test --workspaces --if-present",
     "test:prismic": "npm run test --workspace=packages/prismic",
     "test:prismic-react": "npm run test --workspace=packages/prismic-react",
     "test:e2e": "playwright test",
     "test:all": "npm run test && npm run test:e2e",
-    "clean": "npm run clean --workspaces",
-    "lint": "npm run lint --workspaces",
-    "typecheck": "npm run typecheck --workspaces",
-    "dev:demo": "npm run dev --prefix demo-website",
-    "build:demo": "npm run build --prefix demo-website",
+    "clean": "npm run clean --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "dev:demo": "npm run dev --workspace=demo-website",
     "dev": "npm run build:prismic && npm run build:prismic-react && npm run dev:demo"
   },
   "devDependencies": {

@@ -94,12 +94,7 @@ jobs:
     
     - name: Build packages
       run: |
-        npm run build --workspaces
-    
-    - name: Build demo website
-      run: |
-        cd demo-website
-        npm run build
+        npm run build --workspaces --if-present
     
     - name: Run E2E tests
       run: |
@@ -144,8 +139,7 @@ jobs:
     
     - name: Build demo website
       run: |
-        cd demo-website
-        npm run build
+        npm run build:demo
     
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
